@@ -1,0 +1,33 @@
+name: Quality Check
+
+on:
+  push:
+    branches: [ main, develop ]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.12
+    
+    - name: Instalar herramientas de calidad
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 black
+        pip install -r requirements.txt
+    
+    - name: Verificar formato de código
+      run: |
+        black --check --diff app/
+        black --check --diff tests/
+    
+    - name: Análisis de código con flake8
+      run: |
+        flake8 app/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 app/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics

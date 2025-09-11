@@ -23,7 +23,9 @@ def inicializar_bd():
     CREATE TABLE IF NOT EXISTS productos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre TEXT NOT NULL UNIQUE,
-        precio REAL NOT NULL
+        precio REAL NOT NULL,
+        categoria TEXT DEFAULT 'General',
+        activo BOOLEAN DEFAULT 1
     )
     """)
 
